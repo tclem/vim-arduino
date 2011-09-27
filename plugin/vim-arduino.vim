@@ -42,9 +42,6 @@ let s:helper_dir = expand("<sfile>:h")
 " Reference for how arduino IDE does the compilation:
 " https://github.com/arduino/Arduino/blob/0022/app/src/processing/app/debug/Compiler.java
 function! ArduinoCompile()
-  " let result = system(shellescape(expand('%:h'))."/vim_arduino")
-  " echo system('ls '.shellescape(expand("<sfile>:h")))
-  " echo expand("<sfile>:h")
   echo system(s:helper_dir."/vim-arduino")
 endfunction
 
@@ -58,4 +55,5 @@ endif
 
 if g:vim_arduino_map_keys
   nnoremap <leader>ac :call ArduinoCompile()<CR>
+  nnoremap <leader>ad :call ArduinoDeploy()<CR>
 endif
