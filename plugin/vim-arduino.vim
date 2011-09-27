@@ -26,6 +26,12 @@
 " THE SOFTWARE.
 "
 " ============================================================================
+"
+" NOTES
+"
+" Reference for how the Arduino IDE does compilation:
+" https://github.com/arduino/Arduino/blob/0022/app/src/processing/app/debug/Compiler.java
+
 let s:vim_arduino_version = '0.1.0'
 
 " Load Once: {{{1
@@ -37,14 +43,43 @@ let loaded_vim_arduino = 1
 
 let s:helper_dir = expand("<sfile>:h")
 
-" NOTES
+" Private: Check to see if a file can be compiled by the Aruino IDE
 "
-" Reference for how the Arduino IDE does compilation:
-" https://github.com/arduino/Arduino/blob/0022/app/src/processing/app/debug/Compiler.java
-function! ArduinoCompile()
-  echo system(s:helper_dir."/vim-arduino")
+" Returns the filename of the current buffer if it is a *.pde file. Otherwise
+" empty string.
+function! s:CheckFile()
+  let l:f_name = bufname("%")
+  if l:f_name =~ '.pde$'
+    return l:f_name
+  else
+    echo "Only *.pde files can be compilied. File" l:f_name "does not have a recognized extention."
+    return ""
+  endif
 endfunction
 
+" Public: Compile the current pde file.
+"
+" Returns nothing.
+function! ArduinoCompile()
+  let l:f_name = s:CheckFile()
+  if !empty(l:f_name)
+    echomsg "Compiling..." l:f_name
+    let l:result = system(s:helper_dir."/vim-arduino " . shellescape(l:f_name))
+    if v:shell_error == 0
+      echomsg "Done"
+    else
+      echohl WarningMsg
+      echomsg "Compilation Failed"
+      echohl None
+      echomsg l:result
+    endif
+  endif
+endfunction
+
+
+" Public: Compile and Deploy the current pde file.
+"
+" Returns nothing.
 function! ArduinoDeploy()
   echo "deploy"
 endfunction

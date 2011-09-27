@@ -1,9 +1,70 @@
 #!/bin/sh
+#/ Usage: vim-arduino <pde file> [board] [serialport]
+#/ Invokes the Arduino IDE command line runner to compile and deploy
+#/ Arduino sketches.
+#/
 
-echo "my shell script is running"
+# show usage
+[ $# -eq 0 -o "$1" = "--help" ] && {
+    grep '^#/'< "$0" | cut -c4-
+    exit 2
+}
+
+pde_file=
+board="uno"
+port=
+
+while [ $# -gt 0 ]
+do
+    case "$1" in
+        -s|--serialport)
+            shift
+            port=$1
+            shift
+            ;;
+        -b|--board)
+            shift
+            board=$1
+            shift
+            ;;
+        *)
+            if [ -z "$pde_file" ]
+            then pde_file="$1"
+            fi
+            shift
+            ;;
+    esac
+done
+
+# bail out of pde file is not specified.
+[ -z "$pde_file" ] && {
+    echo "$(basename $0): pde_file not specified" 1>&2
+    exit 1
+}
+
+# try an find a serial port automatically if one is not passsed in.
+if [ -z "$port" ]
+then port=$(ls /dev/tty.* | grep usb)
+fi
+
+# bail out if no serial port found.
+[ -z "$port" ] && {
+    echo "$(basename $0): serial port not specified" 1>&2
+    exit 1
+}
+
+# bail out if no board specified.
+[ -z "$board" ] && {
+    echo "$(basename $0): board not specified" 1>&2
+    exit 1
+}
+
+# echo "Compiling '$pde_file' for board $board on serial port $port"
+
+DIR="$( cd "$( dirname "$0" )" && pwd )"
 java \
   -Djava.library.path=/Applications/Arduino.app/Contents/Resources/Java \
   -d32 \
   -Dfile.encoding=MacRoman \
-  -classpath/Applications/Arduino.app/Contents/Resources/Java \
-  -jar arduino-cli.jar
+  -classpath /Applications/Arduino.app/Contents/Resources/Java \
+  -jar "$DIR/vim-arduino-cli.jar" "$pde_file" "$port" "$board"
