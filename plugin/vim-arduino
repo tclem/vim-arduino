@@ -1,3 +1,9 @@
 #!/bin/sh
 
 echo "my shell script is running"
+java \
+  -Djava.library.path=/Applications/Arduino.app/Contents/Resources/Java \
+  -d32 \
+  -Dfile.encoding=MacRoman \
+  -classpath/Applications/Arduino.app/Contents/Resources/Java \
+  -jar arduino-cli.jar

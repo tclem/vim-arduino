@@ -39,7 +39,7 @@ let s:helper_dir = expand("<sfile>:h")
 
 " NOTES
 "
-" Reference for how arduino IDE does the compilation:
+" Reference for how the Arduino IDE does compilation:
 " https://github.com/arduino/Arduino/blob/0022/app/src/processing/app/debug/Compiler.java
 function! ArduinoCompile()
   echo system(s:helper_dir."/vim-arduino")
