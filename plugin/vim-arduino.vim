@@ -57,31 +57,49 @@ function! s:CheckFile()
   endif
 endfunction
 
+" Private: Compile or deploy code
+"
+" Returns nothing.
+function! s:InvokeArduinoCli(deploy)
+  let l:flag = a:deploy ? "-d" : "-c"
+  let l:f_name = s:CheckFile()
+  if !empty(l:f_name)
+    execute "w"
+    if a:deploy
+      echomsg "Compiling and deploying..." l:f_name
+    else
+      echomsg "Compiling..." l:f_name
+    endif
+
+    let l:result = system(s:helper_dir."/vim-arduino " . l:flag . " " . shellescape(l:f_name))
+    if v:shell_error == 0
+      echomsg "Done"
+    else
+      echo l:result
+      echohl WarningMsg
+      echomsg "Compilation Failed"
+      echohl None
+    endif
+  endif
+
+endfunction
+
 " Public: Compile the current pde file.
 "
 " Returns nothing.
 function! ArduinoCompile()
-  let l:f_name = s:CheckFile()
-  if !empty(l:f_name)
-    echomsg "Compiling..." l:f_name
-    let l:result = system(s:helper_dir."/vim-arduino " . shellescape(l:f_name))
-    if v:shell_error == 0
-      echomsg "Done"
-    else
-      echohl WarningMsg
-      echomsg "Compilation Failed"
-      echohl None
-      echomsg l:result
-    endif
-  endif
+  call s:InvokeArduinoCli(0)
 endfunction
-
 
 " Public: Compile and Deploy the current pde file.
 "
 " Returns nothing.
 function! ArduinoDeploy()
-  echo "deploy"
+  call s:InvokeArduinoCli(1)
+endfunction
+
+function! ArduinoSerialMonitor()
+  echo system(s:helper_dir."/vim-arduino-serial")
 endfunction
 
 if !exists('g:vim_arduino_map_keys')
@@ -91,4 +109,5 @@ endif
 if g:vim_arduino_map_keys
   nnoremap <leader>ac :call ArduinoCompile()<CR>
   nnoremap <leader>ad :call ArduinoDeploy()<CR>
+  nnoremap <leader>as :call ArduinoSerialMonitor()<CR>
 endif

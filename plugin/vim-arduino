@@ -13,6 +13,7 @@
 pde_file=
 board="uno"
 port=
+switch="-c"
 
 while [ $# -gt 0 ]
 do
@@ -25,6 +26,14 @@ do
         -b|--board)
             shift
             board=$1
+            shift
+            ;;
+        -d|--deploy)
+            switch="-d"
+            shift
+            ;;
+        -c|--compile)
+            switch="-c"
             shift
             ;;
         *)
@@ -66,5 +75,5 @@ java \
   -Djava.library.path=/Applications/Arduino.app/Contents/Resources/Java \
   -d32 \
   -Dfile.encoding=MacRoman \
-  -classpath /Applications/Arduino.app/Contents/Resources/Java \
-  -jar "$DIR/vim-arduino-cli.jar" "$pde_file" "$port" "$board"
+  -Djava.awt.headless=true \
+  -jar "$DIR/vim-arduino-cli.jar" "$switch" "$pde_file" "$port" "$board"

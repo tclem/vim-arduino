@@ -1,0 +1,18 @@
+#!/bin/sh
+
+echo "use Ctrl-a, k to exit the screen utility"
+
+port=$(ls /dev/tty.* | grep usb)
+# osascript -e 'tell application "Terminal" to do script "screen '.$port'"'
+osascript -e \
+  "tell application \"iTerm\"
+    activate
+    set myterm to (make new terminal)
+    tell myterm
+      launch session \"Default\"
+      set _session to current session
+      tell _session
+        write text \"screen $port\"
+      end tell
+    end tell
+   end tell"
