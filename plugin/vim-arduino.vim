@@ -43,6 +43,24 @@ let loaded_vim_arduino = 1
 
 let s:helper_dir = expand("<sfile>:h")
 
+" Private: Get the board to deploy to
+"
+" Boards can be defined in the first line of your pde file like this:
+" // board: atmega238
+"
+" Returns the board defined on the first line of the pde file. Otherwise
+" returns "uno".
+function! s:ArduinoGetBoard()
+  let l:line = getline(1)
+  let l:i = match(l:line, "board:")
+  if l:i < 0
+    return "uno"
+  endif
+
+  let l:board = substitute(strpart(l:line, l:i + 6, strlen(l:line)), " ", "", "")
+  return l:board
+endfunction
+
 " Private: Check to see if a file can be compiled by the Aruino IDE
 "
 " Returns the filename of the current buffer if it is a *.pde file. Otherwise
@@ -71,14 +89,20 @@ function! s:InvokeArduinoCli(deploy)
       echomsg "Compiling..." l:f_name
     endif
 
-    let l:result = system(s:helper_dir."/vim-arduino " . l:flag . " " . shellescape(l:f_name))
+    let l:board = s:ArduinoGetBoard()
+    let l:command = s:helper_dir . "/vim-arduino " .
+          \ l:flag . " " .
+          \ "-b " . l:board . " " .
+          \ shellescape(l:f_name)
+    " echo l:command
+    let l:result = system(l:command)
     if v:shell_error == 0
       echomsg "Done"
     else
-      echo l:result
       echohl WarningMsg
       echomsg "Compilation Failed"
       echohl None
+      echo l:result
     endif
   endif
 
@@ -98,6 +122,9 @@ function! ArduinoDeploy()
   call s:InvokeArduinoCli(1)
 endfunction
 
+" Public: Monitor a serial port
+"
+" Returns nothing.
 function! ArduinoSerialMonitor()
   echo system(s:helper_dir."/vim-arduino-serial")
 endfunction

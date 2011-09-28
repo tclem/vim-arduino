@@ -1,0 +1,11 @@
+#!/bin/sh
+#/ Usage: setup-dev
+#/ Setup my environment to hack on vim-arduino.
+#/
+
+rm ~/.vim/plugin/vim-arduino*
+
+ln -s $HOME/github/public/vim-arduino/plugin/vim-arduino ~/.vim/plugin/vim-arduino
+ln -s $HOME/github/public/vim-arduino/plugin/vim-arduino-cli.jar ~/.vim/plugin/vim-arduino-cli.jar
+ln -s $HOME/github/public/vim-arduino/plugin/vim-arduino-serial ~/.vim/plugin/vim-arduino-serial
+ln -s $HOME/github/public/vim-arduino/plugin/vim-arduino.vim ~/.vim/plugin/vim-arduino.vim
