@@ -53,7 +53,12 @@ done
 
 # try an find a serial port automatically if one is not passsed in.
 if [ -z "$port" ]
+echo "Auto detecting serial port"
 then port=$(ls /dev/tty.* | grep usb)
+fi
+if [ -z "$port" ]
+echo "No usb serial port found. Faking one so we can still compile."
+then port="/dev/tty."
 fi
 
 # bail out if no serial port found.
