@@ -75,6 +75,14 @@ function! s:CheckFile()
   endif
 endfunction
 
+function! s:PrintStatus(result)
+  if a:result == 0
+    echohl Statement | echomsg "Succeeded." | echohl None
+  else
+    echohl WarningMsg | echomsg "Failed." | echohl None
+  endif
+endfunction
+
 " Private: Compile or deploy code
 "
 " Returns nothing.
@@ -96,14 +104,9 @@ function! s:InvokeArduinoCli(deploy)
           \ shellescape(l:f_name)
     " echo l:command
     let l:result = system(l:command)
-    if v:shell_error == 0
-      echomsg "Done"
-    else
-      echohl WarningMsg
-      echomsg "Compilation Failed"
-      echohl None
-      echo l:result
-    endif
+    call s:PrintStatus(v:shell_error)
+    echo l:result
+    call s:PrintStatus(v:shell_error)
   endif
 
 endfunction

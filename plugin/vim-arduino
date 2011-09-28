@@ -53,12 +53,12 @@ done
 
 # try an find a serial port automatically if one is not passsed in.
 if [ -z "$port" ]
-echo "Auto detecting serial port"
 then port=$(ls /dev/tty.* | grep usb)
+echo "Auto detecting serial port"
 fi
 if [ -z "$port" ]
-echo "No usb serial port found. Faking one so we can still compile."
 then port="/dev/tty."
+echo "No usb serial port found. Faking one so we can still compile."
 fi
 
 # bail out if no serial port found.
@@ -75,10 +75,12 @@ fi
 
 # echo "Compiling '$pde_file' for board $board on serial port $port"
 
+sketchbook=$(echo $HOME/Documents/Arduino)
+
 DIR="$( cd "$( dirname "$0" )" && pwd )"
 java \
   -Djava.library.path=/Applications/Arduino.app/Contents/Resources/Java \
   -d32 \
-  -Dfile.encoding=MacRoman \
+  -Darduino.sketchbook="$sketchbook" \
   -Djava.awt.headless=true \
   -jar "$DIR/vim-arduino-cli.jar" "$switch" "$pde_file" "$port" "$board"
