@@ -40,6 +40,9 @@ if exists("loaded_vim_arduino")
 endif
 let loaded_vim_arduino = 1
 
+if !exists('g:vim_arduino_auto_open_serial')
+  let g:vim_arduino_auto_open_serial = 0
+endif
 
 let s:helper_dir = expand("<sfile>:h")
 
@@ -123,6 +126,11 @@ endfunction
 " Returns nothing.
 function! ArduinoDeploy()
   call s:InvokeArduinoCli(1)
+
+  " optionally auto open a serial port
+  if g:vim_arduino_auto_open_serial
+    call ArduinoSerialMonitor()
+  endif
 endfunction
 
 " Public: Monitor a serial port
