@@ -72,8 +72,10 @@ function! s:CheckFile()
   let l:f_name = bufname("%")
   if l:f_name =~ '.pde$'
     return l:f_name
+  elseif l:f_name =~ '.ino$'
+    return l:f_name
   else
-    echo "Only *.pde files can be compilied. File" l:f_name "does not have a recognized extention."
+    echo "Only *.pde and *.ino files can be compilied. File" l:f_name "does not have a recognized extention."
     return ""
   endif
 endfunction
