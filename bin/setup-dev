@@ -3,9 +3,12 @@
 #/ Setup my environment to hack on vim-arduino.
 #/
 
-rm ~/.vim/plugin/vim-arduino*
+repo=$HOME/github/public/vim-arduino/plugin
+plugin=$HOME/.vim/bundle/vim-arduino.vim/plugin
 
-ln -s $HOME/github/public/vim-arduino/plugin/vim-arduino ~/.vim/plugin/vim-arduino
-ln -s $HOME/github/public/vim-arduino/plugin/vim-arduino-cli.jar ~/.vim/plugin/vim-arduino-cli.jar
-ln -s $HOME/github/public/vim-arduino/plugin/vim-arduino-serial ~/.vim/plugin/vim-arduino-serial
-ln -s $HOME/github/public/vim-arduino/plugin/vim-arduino.vim ~/.vim/plugin/vim-arduino.vim
+rm $plugin/vim-arduino*
+
+ln -s $repo/vim-arduino $plugin/vim-arduino
+ln -s $repo/vim-arduino-cli.jar $plugin/vim-arduino-cli.jar
+ln -s $repo/vim-arduino-serial $plugin/vim-arduino-serial
+ln -s $repo/vim-arduino.vim $plugin/vim-arduino.vim
