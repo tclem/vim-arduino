@@ -69,7 +69,7 @@ endfunction
 " Returns the filename of the current buffer if it is a *.pde file. Otherwise
 " empty string.
 function! s:CheckFile()
-  let l:f_name = bufname("%")
+  let l:f_name = expand('%:p')
   if l:f_name =~ '.pde$'
     return l:f_name
   elseif l:f_name =~ '.ino$'
