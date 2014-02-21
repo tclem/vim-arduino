@@ -93,6 +93,12 @@ endfunction
 " Returns nothing.
 function! s:InvokeArduinoCli(deploy)
   let l:flag = a:deploy ? "-d" : "-c"
+  if exists("g:vim_arduino_serial_port")
+    let l:flag = l:flag . " -s " . g:vim_arduino_serial_port
+  endif
+  if exists("g:vim_arduino_library_path")
+    let l:flag = l:flag . " -l " . g:vim_arduino_library_path
+  endif
   let l:f_name = s:CheckFile()
   if !empty(l:f_name)
     execute "w"
