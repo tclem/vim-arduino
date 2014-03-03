@@ -33,6 +33,8 @@
 " https://github.com/arduino/Arduino/blob/0022/app/src/processing/app/debug/Compiler.java
 
 let s:vim_arduino_version = '0.1.0'
+let s:vim_arduino_path=expand("<sfile>:p:h")
+let s:vim_arduino_kill_path=s:vim_arduino_path . "/kill-screen.sh"
 
 " Load Once: {{{1
 if exists("loaded_vim_arduino")
@@ -103,6 +105,7 @@ function! s:InvokeArduinoCli(deploy)
   if !empty(l:f_name)
     execute "w"
     if a:deploy
+      call KillScreen()
       echomsg "Compiling and deploying..." l:f_name
     else
       echomsg "Compiling..." l:f_name
@@ -139,6 +142,13 @@ function! ArduinoDeploy()
   if g:vim_arduino_auto_open_serial
     call ArduinoSerialMonitor()
   endif
+endfunction
+
+" Public: kills all screens
+"
+" Returns nothing.
+function! KillScreen()
+      :call system(s:vim_arduino_kill_path)
 endfunction
 
 " Public: Monitor a serial port
