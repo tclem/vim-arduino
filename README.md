@@ -30,6 +30,17 @@ The default key mapping can be turned off by doing this in your `.vimrc`:
 let g:vim_arduino_map_keys = 0
 ```
 
+## Configuration
+
+There are a few settings you might need to set:
+
+```
+"Default: /Applications/Arduino.app/Contents/Resources/Java
+let g:vim_arduino_library_path = /path/to/arduino/installation
+"Default: result of `$(ls /dev/tty.* | grep usb)`
+let g:vim_arduino_serial_port = /my/serial/port
+```
+
 ## Requirements
 
 You must have the [Arduino][arduino] IDE installed. Currently only
