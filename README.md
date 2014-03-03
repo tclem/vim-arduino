@@ -1,7 +1,7 @@
 # Vim Arduino
 
 This script allows you to compile and deploy Arduino (*.pde) sketches
-directly from Vim.
+directly from Vim. I haven't had the time or need to keep this project up to date, but it looks like [jplaut/vim-arduino-ino](https://github.com/jplaut/vim-arduino-ino/) is another good option for similar functionality.
 
 ## Install
 
